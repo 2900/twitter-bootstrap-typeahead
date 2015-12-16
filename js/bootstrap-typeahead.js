@@ -50,7 +50,7 @@ function ($) {
         this.render = this.options.render || this.render;
         this.select = this.options.select || this.select;
         this.sorter = this.options.sorter || this.sorter;
-        this.source = this.options.source || this.source;        
+        this.source = this.options.source || this.source;
                 
         if (!this.source.length) {
             var ajax = this.options.ajax;
@@ -215,9 +215,9 @@ function ($) {
             else {
                 that.query = that.$element.val();
 
-                if (!that.query) {
-                    return that.shown ? that.hide() : that;
-                }
+                //if (!that.query) {
+                //    return that.shown ? that.hide() : that;
+                //}
                 
                 items = that.grepper(that.source);
                 
@@ -399,18 +399,21 @@ function ($) {
         //  Listens for user events
         //
         listen: function () {
+            this.$element.off();
             this.$element.on('blur', $.proxy(this.blur, this))
-                         .on('keyup', $.proxy(this.keyup, this));
+                         .on('keyup', $.proxy(this.keyup, this))
+                         .on('click', $.proxy(this.cusClick, this));
 
     		if (this.eventSupported('keydown')) {
 				this.$element.on('keydown', $.proxy(this.keypress, this));
 			} else {
 				this.$element.on('keypress', $.proxy(this.keypress, this));
 			}
-
+            this.$menu.off();
             this.$menu.on('click', $.proxy(this.click, this))
                       .on('mouseenter', 'li', $.proxy(this.mouseenter, this));
         },
+
 
         //------------------------------------------------------------------
         //
@@ -441,6 +444,12 @@ function ($) {
                     break;
                 default:
                     this.lookup();
+            }
+        },
+        cusClick: function(e) {
+            if (this.options.defaultShow) {
+                //this.show();
+                this.lookup();
             }
         },
 
@@ -520,14 +529,14 @@ function ($) {
             var $this = $(this),
                 data = $this.data('typeahead'),
                 options = typeof option === 'object' && option;
-
-            if (!data) {
+                $this.off();
+            //if (!data) {
                 $this.data('typeahead', (data = new Typeahead(this, options)));
-            }
+           // }
 
-            if (typeof option === 'string') {
-                data[option]();
-            }
+            //if (typeof option === 'string') {
+            //    data[option]();
+            //}
         });
     }
 
